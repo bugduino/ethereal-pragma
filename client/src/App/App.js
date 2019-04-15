@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import SimpleStorageContract from "./contracts/SimpleStorage.json";
-import getWeb3 from "./utils/getWeb3";
+import SimpleStorageContract from "../contracts/SimpleStorage.json";
+import getWeb3 from "../utils/getWeb3";
 
 import "./App.css";
 
@@ -30,7 +30,8 @@ class App extends Component {
       );
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: deployedNetwork && deployedNetwork.address && instance }, this.runExample);
+      this.setState({ web3, accounts, contract: deployedNetwork && deployedNetwork.address && instance });
+      // this.setState({ web3, accounts, contract: deployedNetwork && deployedNetwork.address && instance }, this.runExample);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -40,24 +41,24 @@ class App extends Component {
     }
   };
 
-  runExample = async () => {
-    const { accounts, contract } = this.state;
-    if (!contract) {
-      return this.setState({genericError: 'Contract not present in this network'});
-    }
-    if (!accounts || !accounts.length) {
-      return this.setState({genericError: 'No ETH accounts found'});
-    }
-    // TODO why await does not work???
-    // const res = await contract.methods.set(5).send({ from: accounts[0] });
-
-    contract.methods.set(10).send({ from: accounts[0] }, async () => {
-      // Get the value from the contract to prove it worked.
-      const response = await contract.methods.get().call();
-      // Update state with the result.
-      this.setState({ storageValue: response.toString() });
-    })
-  };
+  // runExample = async () => {
+  //   const { accounts, contract } = this.state;
+  //   if (!contract) {
+  //     return this.setState({genericError: 'Contract not present in this network'});
+  //   }
+  //   if (!accounts || !accounts.length) {
+  //     return this.setState({genericError: 'No ETH accounts found'});
+  //   }
+  //   // TODO why await does not work???
+  //   // const res = await contract.methods.set(5).send({ from: accounts[0] });
+  //
+  //   contract.methods.set(10).send({ from: accounts[0] }, async () => {
+  //     // Get the value from the contract to prove it worked.
+  //     const response = await contract.methods.get().call();
+  //     // Update state with the result.
+  //     this.setState({ storageValue: response.toString() });
+  //   })
+  // };
 
   render() {
     const { web3, genericError } = this.state;
