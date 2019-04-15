@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import SimpleStorageContract from "../contracts/SimpleStorage.json";
 import getWeb3 from "../utils/getWeb3";
 
-import "./App.css";
+import styles from './App.module.scss';
 
 class App extends Component {
   state = {
@@ -67,12 +67,17 @@ class App extends Component {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-      <div className="App">
-        <h1>Pragma</h1>
-        {genericError &&
-          <p>{genericError}</p>
-        }
-        <div>The stored value is: {this.state.storageValue}</div>
+      <div className={[styles.main]}>
+        <header>
+          <h1>Foo</h1>
+        </header>
+        <div className={[styles.body]}>
+          <h1>Pragma</h1>
+          {genericError &&
+            <p>{genericError}</p>
+          }
+          <div>The stored value is: {this.state.storageValue}</div>
+        </div>
       </div>
     );
   }
