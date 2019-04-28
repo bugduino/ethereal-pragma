@@ -13,6 +13,7 @@ import {
 } from "rimble-ui";
 import NetworkOverview from "./NetworkOverview";
 import theme from "../../theme";
+import Web3ConnectionButtons from "../../Web3ConnectionButtons/Web3ConnectionButtons";
 
 class ConnectionModal extends React.Component {
   render() {
@@ -84,9 +85,8 @@ class ConnectionModal extends React.Component {
                 you continue.
               </Text>
 
-              <MetaMaskButton onClick={this.props.validateAccount}>
-                Connect with MetaMask
-              </MetaMaskButton>
+              <Web3ConnectionButtons />
+
 
               <Flex mt={3} mx={4} alignItems="center">
                 <Box mr={3}>

@@ -74,44 +74,44 @@ class RimbleTransaction extends React.Component {
 
   web3Preflight = () => {
     // Is this browser compatible?
-    if (!this.state.validBrowser) {
-      console.log("Invalid browser, cancelling transaction.");
-      let modals = { ...this.state.modals };
-      modals.data.noWeb3BrowserModalIsOpen = true;
-      this.setState({ modals });
-    }
-
-    // Is there a web3 provider?
-    if (!this.state.web3) {
-      console.log("No browser wallet, cancelling transaction.");
-      let modals = { ...this.state.modals };
-      modals.data.noWalletModalIsOpen = true;
-      this.setState({ modals });
-      return false;
-    }
+    // if (!this.state.validBrowser) {
+    //   console.log("Invalid browser, cancelling transaction.");
+    //   let modals = { ...this.state.modals };
+    //   modals.data.noWeb3BrowserModalIsOpen = true;
+    //   this.setState({ modals });
+    // }
+    //
+    // // Is there a web3 provider?
+    // if (!this.state.web3) {
+    //   console.log("No browser wallet, cancelling transaction.");
+    //   let modals = { ...this.state.modals };
+    //   modals.data.noWalletModalIsOpen = true;
+    //   this.setState({ modals });
+    //   return false;
+    // }
 
     return true;
   };
 
   web3ActionPreflight = () => {
     // Is this browser compatible?
-    if (!this.state.validBrowser) {
-      console.log("Invalid browser, cancelling transaction.");
-      let modals = { ...this.state.modals };
-      modals.data.noWeb3BrowserModalIsOpen = true;
-      this.setState({ modals });
-      return false;
-    }
-
-    // Is there a wallet?
-    console.log("this.state.web3Fallback", this.state.web3Fallback);
-    if (this.state.web3Fallback) {
-      console.log("No browser wallet, cancelling transaction.");
-      let modals = { ...this.state.modals };
-      modals.data.noWalletModalIsOpen = true;
-      this.setState({ modals });
-      return false;
-    }
+    // if (!this.state.validBrowser) {
+    //   console.log("Invalid browser, cancelling transaction.");
+    //   let modals = { ...this.state.modals };
+    //   modals.data.noWeb3BrowserModalIsOpen = true;
+    //   this.setState({ modals });
+    //   return false;
+    // }
+    //
+    // // Is there a wallet?
+    // console.log("this.state.web3Fallback", this.state.web3Fallback);
+    // if (this.state.web3Fallback) {
+    //   console.log("No browser wallet, cancelling transaction.");
+    //   let modals = { ...this.state.modals };
+    //   modals.data.noWalletModalIsOpen = true;
+    //   this.setState({ modals });
+    //   return false;
+    // }
 
     return true;
   };
@@ -141,33 +141,33 @@ class RimbleTransaction extends React.Component {
   };
 
   // Initialize a web3 provider
-  // TODO: Make async work
-  initWeb3 = async () => {
+  initWeb3 = async (web3) => {
     this.checkModernBrowser();
+    if (!web3) {
+      web3 = {};
 
-    let web3 = {};
+      // Check for modern web3 provider
+      if (window.ethereum) {
+        console.log("Using modern web3 provider.");
+        web3 = new Web3(window.ethereum);
+      }
+      // Legacy dapp browsers, public wallet address always exposed
+      else if (window.web3) {
+        console.log("Legacy web3 provider. Try updating.");
+        web3 = new Web3(window.web3.currentProvider);
+      }
+      // Non-dapp browsers...
+      else {
+        console.log("Non-Ethereum browser detected. Using Infura fallback.");
 
-    // Check for modern web3 provider
-    if (window.ethereum) {
-      console.log("Using modern web3 provider.");
-      web3 = new Web3(window.ethereum);
-    }
-    // Legacy dapp browsers, public wallet address always exposed
-    else if (window.web3) {
-      console.log("Legacy web3 provider. Try updating.");
-      web3 = new Web3(window.web3.currentProvider);
-    }
-    // Non-dapp browsers...
-    else {
-      console.log("Non-Ethereum browser detected. Using Infura fallback.");
+        const web3Provider = new Web3.providers.HttpProvider(
+          "https://rinkeby.infura.io/v3/c43d74f41ea4482d8eecfa96d47a8151"
+        );
+        web3 = new Web3(web3Provider);
 
-      const web3Provider = new Web3.providers.HttpProvider(
-        "https://rinkeby.infura.io/v3/c43d74f41ea4482d8eecfa96d47a8151"
-      );
-      web3 = new Web3(web3Provider);
-
-      // Set fallback property, used to show modal
-      this.setState({ web3Fallback: true });
+        // Set fallback property, used to show modal
+        this.setState({ web3Fallback: true });
+      }
     }
 
     this.setState({ web3 }, () => {
@@ -463,7 +463,7 @@ class RimbleTransaction extends React.Component {
           transaction.confirmationCount += 1;
 
           // How many confirmations should be received before informing the user
-          const confidenceThreshold = 3;
+          const confidenceThreshold = 1;
 
           if (transaction.confirmationCount === 1) {
             // Initial confirmation receipt
@@ -789,6 +789,12 @@ class RimbleTransaction extends React.Component {
   componentDidMount() {
     // Performs a check on browser and will load a web3 provider
     this.initWeb3();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.web3 && prevProps.web3 !== this.props.web3) {
+      // Performs a check on browser and will load a web3 provider
+      this.initWeb3(this.props.web3);
+    }
   }
 
   render() {

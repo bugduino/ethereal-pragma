@@ -37,7 +37,7 @@ class NoWalletModal extends React.Component {
 
             <Text my={4}>
               Your current browser does not have a blockchain connected wallet.
-              Try using MetaMask.
+              Try using MetaMask or Fortmatic.
             </Text>
 
             <Link
