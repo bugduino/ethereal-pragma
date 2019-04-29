@@ -7,11 +7,11 @@ import {
   TextButton,
   Modal,
   Flex,
-  Box,
-  MetaMaskButton
+  Box
 } from "rimble-ui";
 import NetworkOverview from "./NetworkOverview";
 import theme from "../../theme";
+import Web3ConnectionButtons from "../../Web3ConnectionButtons/Web3ConnectionButtons";
 
 class TransactionConnectionModal extends React.Component {
   render() {
@@ -79,9 +79,7 @@ class TransactionConnectionModal extends React.Component {
                 <Text.span fontWeight={3}>0x</Text.span>.
               </Text>
 
-              <MetaMaskButton onClick={this.props.validateAccount}>
-                Connect with MetaMask
-              </MetaMaskButton>
+              <Web3ConnectionButtons />
             </Flex>
           </Flex>
         </Card>

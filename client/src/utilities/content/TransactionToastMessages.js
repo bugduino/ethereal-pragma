@@ -1,14 +1,14 @@
 const TransactionToastMessages = {
     started: {
-      message: "Change submitted",
-      secondaryMessage: "Confirm in MetaMask",
+      message: "Lending request submitted",
+      secondaryMessage: "Confirm with your wallet provider",
       actionHref: "",
       actionText: "",
       variant: "default",
       icon: "InfoOutline"
     },
     pending: {
-      message: "Processing change...",
+      message: "Processing lending request...",
       secondaryMessage: "This may take a few minutes",
       actionHref: "",
       actionText: "",
@@ -16,23 +16,22 @@ const TransactionToastMessages = {
     },
     confirmed: {
       message: "First block confirmed",
-      secondaryMessage: "Your change is in progress",
+      secondaryMessage: "Your lending request is in progress",
       actionHref: "",
       actionText: "",
       variant: "processing"
     },
     success: {
-      message: "Smart contract value changed",
+      message: "Lending request completed",
       variant: "success"
     },
     error: {
-      message: "Value change failed",
+      message: "Lending request failed",
       secondaryMessage: "Could not complete transaction.",
       actionHref: "",
       actionText: "",
       variant: "failure"
     }
   };
-  
+
   export default TransactionToastMessages;
-  

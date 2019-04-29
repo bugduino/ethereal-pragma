@@ -3,34 +3,16 @@ import { Box } from 'rimble-ui'
 import { PublicAddress } from 'rimble-ui';
 import { QR } from 'rimble-ui';
 import styles from './Landing.module.scss';
+import LandingForm from '../LandingForm/LandingForm';
 
 class Landing extends Component {
   state = {
-    storageValue: 0,
     contract: null,
     genericError: null,
   };
-  // runExample = async () => {
-  //   const { accounts, contract } = this.state;
-  //   if (!contract) {
-  //     return this.setState({genericError: 'Contract not present in this network'});
-  //   }
-  //   if (!accounts || !accounts.length) {
-  //     return this.setState({genericError: 'No ETH accounts found'});
-  //   }
-  //   // TODO why await does not work???
-  //   // const res = await contract.methods.set(5).send({ from: accounts[0] });
-  //
-  //   contract.methods.set(10).send({ from: accounts[0] }, async () => {
-  //     // Get the value from the contract to prove it worked.
-  //     const response = await contract.methods.get().call();
-  //     // Update state with the result.
-  //     this.setState({ storageValue: response.toString() });
-  //   })
-  // };
   render() {
     const { account, network, accountBalance } = this.props;
-    const { genericError, storageValue } = this.state;
+    const { genericError } = this.state;
     return (
       <Box
         style={{
@@ -40,6 +22,7 @@ class Landing extends Component {
         <div>
           <header>
             <h1>Pragma</h1>
+            <LandingForm />
           </header>
           <div className={[styles.body]}>
             {account &&
@@ -53,7 +36,6 @@ class Landing extends Component {
             {genericError &&
               <p>{genericError}</p>
             }
-            <div>The stored value is: {storageValue}</div>
           </div>
         </div>
       </Box>

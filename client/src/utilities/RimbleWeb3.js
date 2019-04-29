@@ -405,7 +405,7 @@ class RimbleTransaction extends React.Component {
     }, 1000);
   };
 
-  contractMethodSendWrapper = contractMethod => {
+  contractMethodSendWrapper = (contractMethod, params = [], value = null) => {
     // Is it web3 capable?
     if (!this.web3ActionPreflight()) {
       return;
@@ -449,8 +449,8 @@ class RimbleTransaction extends React.Component {
     const { contract, account } = this.state;
 
     try {
-      contract.methods[contractMethod]()
-        .send({ from: account })
+      contract.methods[contractMethod](...params)
+        .send({ from: account, value })
         .on("transactionHash", hash => {
           // Submitted to block and received transaction hash
           // Set properties on the current transaction
@@ -464,7 +464,7 @@ class RimbleTransaction extends React.Component {
           transaction.confirmationCount += 1;
 
           // How many confirmations should be received before informing the user
-          const confidenceThreshold = 1;
+          const confidenceThreshold = 2;
 
           if (transaction.confirmationCount === 1) {
             // Initial confirmation receipt
@@ -498,8 +498,8 @@ class RimbleTransaction extends React.Component {
           this.updateTransaction(transaction);
           // TODO: should this be a custom error? What is the error here?
           // TODO: determine how to handle error messages globally
-          window.toastProvider.addMessage("Value change failed", {
-            secondaryMessage: "Could not change value.",
+          window.toastProvider.addMessage("Something went wrong", {
+            secondaryMessage: "Please retry",
             actionHref: "",
             actionText: "",
             variant: "failure"
@@ -510,8 +510,8 @@ class RimbleTransaction extends React.Component {
       this.updateTransaction(transaction);
       // TODO: should this be a custom error? What is the error here?
       // TODO: determine how to handle error messages globally
-      window.toastProvider.addMessage("Value change failed", {
-        secondaryMessage: "Could not change value on smart contract",
+      window.toastProvider.addMessage("Something went really wrong, we are sorry", {
+        secondaryMessage: "Try refreshing the page :(",
         actionHref: "",
         actionText: "",
         variant: "failure"
