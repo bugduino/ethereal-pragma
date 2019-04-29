@@ -1,5 +1,10 @@
-.body {
-  margin: 0 auto;
-  max-width: 50em;
-  padding: 4em 1em;
+.header {
+  background-color: white;
+  background-image: url("/images/header.jpg");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  line-height: 1.2;
+  padding: 30vh 2em;
+  text-align: center;
 }

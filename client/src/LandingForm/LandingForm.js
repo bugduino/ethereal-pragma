@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from './LandingForm.module.scss';
+import { Card } from "rimble-ui";
 
 import RimbleWeb3 from "../utilities/RimbleWeb3";
 import TransactionToastUtil from "../utilities/TransactionToastUtil";
@@ -20,7 +21,7 @@ class LandingForm extends Component {
           contractMethodSendWrapper,
           web3
         }) => (
-          <div className={[styles.body]}>
+          <Card width={"50em"} mx={"auto"} px={4}>
             <SmartContractControls
               web3={web3}
               contract={contract}
@@ -30,7 +31,7 @@ class LandingForm extends Component {
               contractMethodSendWrapper={contractMethodSendWrapper}
             />
             <TransactionToastUtil transactions={transactions} />
-          </div>
+          </Card>
             // <TransactionsCard transactions={transactions} />
         )}
       </RimbleWeb3.Consumer>

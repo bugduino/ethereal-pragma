@@ -19,7 +19,7 @@ class SmartContractControls extends React.Component {
       const web3 = this.props.web3;
       const BNify = s => new BigNumber(String(s));
       // TODO get rate from compound directly
-      value = BNify(value).times('2252857.14286').times('100').integerValue(BigNumber.ROUND_FLOOR) // blocks in a year (14 sec block time)
+      value = BNify(value).times('2102666.66667').times('100').integerValue(BigNumber.ROUND_FLOOR) // blocks in a year (15 sec block time)
       value = web3.utils.fromWei(
         value.toString(),
         "ether"
@@ -143,41 +143,36 @@ class SmartContractControls extends React.Component {
           <Text fontSize={6} textAlign={"center"}>
             Earn {this.state.value} % APR
           </Text>
-          {this.state.balanceOf &&
+          {this.state.balanceOf && this.state.balanceOf !== '0' &&
             <Text fontSize={6} textAlign={"center"}>
               cEthers {this.state.balanceOf}
             </Text>
           }
-          {this.state.exchangeRateCurrent &&
-            <Text fontSize={6} textAlign={"center"}>
-              exchangeRateCurrent {this.state.exchangeRateCurrent}
-            </Text>
-          }
         </Box>
 
-        <Flex
-          px={0}
-          pt={4}
-          borderTop={1}
-          borderColor={"#E8E8E8"}
-          justifyContent="space-between"
-        >
-          <Form onSubmit={this.handleSubmit}>
-            <Form.Input
-              placeholder="Enter Amount"
-              type="text"
-              width={1}
-              onChange={this.handleChangeAmount}
-            />
-            <Button size={"medium"} mr={4} onClick={this.mint}>
-              Lend
-            </Button>
-
-            <Button size={"medium"} onClick={this.redeem}>
+        <Form onSubmit={this.handleSubmit} width={1}>
+          <Flex>
+            <Box width={9 / 12}>
+              <Form.Input
+                required={true}
+                placeholder="Enter Amount"
+                type="text"
+                width={1}
+                onChange={this.handleChangeAmount}
+              />
+            </Box>
+            <Box width={3 / 12}>
+              <Button icon="Send" size={"medium"} mr={4} onClick={this.mint}>
+                Lend ETH
+              </Button>
+            </Box>
+          </Flex>
+          {this.state.balanceOf && this.state.balanceOf !== '0' &&
+            <Button size={"medium"} onClick={this.redeem} bg='navy'>
               Redeem All
             </Button>
-          </Form>
-        </Flex>
+          }
+        </Form>
       </Box>
     );
   }

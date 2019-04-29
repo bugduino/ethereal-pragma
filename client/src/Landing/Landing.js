@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Box } from 'rimble-ui'
-import { PublicAddress } from 'rimble-ui';
-import { QR } from 'rimble-ui';
+import { Box, Heading } from 'rimble-ui'
 import styles from './Landing.module.scss';
 import LandingForm from '../LandingForm/LandingForm';
 
@@ -11,7 +9,7 @@ class Landing extends Component {
     genericError: null,
   };
   render() {
-    const { account, network, accountBalance } = this.props;
+    const { network } = this.props;
     const { genericError } = this.state;
     return (
       <Box
@@ -20,23 +18,15 @@ class Landing extends Component {
         }}
       >
         <div>
-          <header>
-            <h1>Pragma</h1>
+          <header className={[styles.header]}>
+            <Box width={"50em"} mx={"auto"} px={4}>
+              <Heading.h1 textAlign="center">Pragma</Heading.h1>
+            </Box>
             <LandingForm />
-          </header>
-          <div className={[styles.body]}>
-            {account &&
-              <div>
-                <span>Balance {accountBalance} </span>
-                <QR value={account} />
-                <PublicAddress address={account} />
-              </div>
-            }
-
             {genericError &&
               <p>{genericError}</p>
             }
-          </div>
+          </header>
         </div>
       </Box>
     );

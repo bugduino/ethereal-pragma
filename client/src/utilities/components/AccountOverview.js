@@ -16,7 +16,7 @@ class AccountOverview extends React.Component {
   render() {
     const roundedBalance = this.trimEth(this.props.accountBalance);
     return (
-      <Flex alignItems={"flex-start"} flexDirection={"column"} my={2} mx={4}>
+      <Flex style={{'cursor': 'pointer'}} alignItems={"flex-start"} flexDirection={"column"} my={2} mx={4} onClick={this.props.toggleModal}>
         <Text fontSize={2}>
           Connected to <ShortHash hash={this.props.account} />
         </Text>
