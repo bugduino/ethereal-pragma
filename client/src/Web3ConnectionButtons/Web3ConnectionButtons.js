@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
-import { useWeb3Context, Web3Consumer } from 'web3-react'
-import { MetaMaskButton } from 'rimble-ui';
-import { Button } from 'rimble-ui'
+import React from 'react'
+import { useWeb3Context } from 'web3-react'
+import { MetaMaskButton, OutlineButton, Image } from 'rimble-ui';
 import connectors from '../App/connectors';
 
-export default function Web3ConnectionButtons() {
+export default function Web3ConnectionButtons(props) {
   const context = useWeb3Context()
 
   if (!context.active && !context.error) {
@@ -26,6 +25,8 @@ export default function Web3ConnectionButtons() {
       case 'Injected':
         return (
           <MetaMaskButton.outline
+            mb={3}
+            fullWidth
             key={connectorName}
             disabled={context.connectorName === connectorName}
             size="large"
@@ -35,14 +36,23 @@ export default function Web3ConnectionButtons() {
         );
       default:
         return (
-          <Button
+          <OutlineButton
+            fullWidth
             mb={3} size="large"
             key={connectorName}
             disabled={context.connectorName === connectorName}
             onClick={async () => await setConnector(connectorName)}
           >
-            Activate {connectorName}
-          </Button>
+            <Image
+              display={'inline-block'}
+              mr={'0.5rem'}
+              src={`images/${connectorName.toLowerCase()}.svg`}
+              alt="fortmatic"
+              width={"1em"}
+              height={"1em"}
+            />
+            Connect with {connectorName}
+          </OutlineButton>
         );
     }
   });
@@ -55,9 +65,9 @@ export default function Web3ConnectionButtons() {
       {buttons}
       <br />
       {(context.active || (context.error && context.connectorName)) && (
-        <button onClick={() => context.unsetConnector()}>
+        <OutlineButton onClick={async () => await context.unsetConnector()}>
           {context.active ? "Deactivate Connector" : "Reset"}
-        </button>
+        </OutlineButton>
       )}
     </div>
   );

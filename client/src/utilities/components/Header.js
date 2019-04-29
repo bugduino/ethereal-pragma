@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Button, Heading } from "rimble-ui";
+import { Box, Flex, Button } from "rimble-ui";
 import NetworkIndicator from "@rimble/network-indicator"
 import AccountOverview from "./AccountOverview";
 

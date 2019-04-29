@@ -6,12 +6,12 @@ import FortmaticApi from "fortmatic";
 
 const {
   InjectedConnector,
-  NetworkOnlyConnector,
+  // NetworkOnlyConnector,
   TrezorConnector,
   LedgerConnector,
-  WalletConnectConnector,
+  // WalletConnectConnector,
   FortmaticConnector,
-  PortisConnector
+  // PortisConnector
 } = Connectors;
 
 const supportedNetworkURLs = {
@@ -22,16 +22,16 @@ const manifestEmail = 'xxx@gmail.com'; // trezor
 const manifestAppUrl = 'https://xxx'; // trezor
 const defaultNetwork = 1;
 const fortmaticApiKey = 'xxx';
-const portisDAppId = 'xxxx';
-const portisNetwork = 'xxx';
+// const portisDAppId = 'xxxx';
+// const portisNetwork = 'xxx';
 
 const Injected = new InjectedConnector({
   supportedNetworks: [1, 4]
 });
 
-const Network = new NetworkOnlyConnector({
-  providerURL: supportedNetworkURLs[1]
-});
+// const Network = new NetworkOnlyConnector({
+//   providerURL: supportedNetworkURLs[1]
+// });
 
 const Trezor = new TrezorConnector({
   api: TrezorApi,
@@ -67,10 +67,10 @@ const Fortmatic = new FortmaticConnector({
 
 export default {
   Injected,
-  Network,
+  Fortmatic,
+  // Network,
   Trezor,
   Ledger,
   // WalletConnect,
-  Fortmatic,
   // Portis
 };

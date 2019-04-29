@@ -9,7 +9,6 @@ import {
   Flex,
   Image,
   Box,
-  MetaMaskButton
 } from "rimble-ui";
 import NetworkOverview from "./NetworkOverview";
 import theme from "../../theme";
@@ -86,7 +85,6 @@ class ConnectionModal extends React.Component {
               </Text>
 
               <Web3ConnectionButtons />
-
 
               <Flex mt={3} mx={4} alignItems="center">
                 <Box mr={3}>

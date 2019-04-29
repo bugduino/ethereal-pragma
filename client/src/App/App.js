@@ -1,14 +1,11 @@
 import React, { Component } from "react";
-import SimpleStorageContract from "../contracts/SimpleStorage.json";
+// import SimpleStorageContract from "../contracts/SimpleStorage.json";
 import { ThemeProvider } from "rimble-ui";
 import Web3 from "web3"; // uses latest 1.x.x version
 import { Web3Consumer } from 'web3-react'
 
 import styles from './App.module.scss';
 
-import { Button } from 'rimble-ui'
-import { PublicAddress } from 'rimble-ui';
-import { QR } from 'rimble-ui';
 import { ToastMessage } from 'rimble-ui';
 
 import theme from "../theme";
@@ -48,7 +45,7 @@ class App extends Component {
           {context => {
             return (
               <ThemeProvider theme={theme} className="App">
-                <RimbleWeb3 config={this.config} web3={context.library}>
+                <RimbleWeb3 config={this.config} context={context}>
                   <RimbleWeb3.Consumer>
                     {({
                       needsPreflight,

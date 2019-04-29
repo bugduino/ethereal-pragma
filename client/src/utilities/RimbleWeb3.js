@@ -141,8 +141,9 @@ class RimbleTransaction extends React.Component {
   };
 
   // Initialize a web3 provider
-  initWeb3 = async (web3) => {
+  initWeb3 = async (web3, account) => {
     this.checkModernBrowser();
+
     if (!web3) {
       web3 = {};
 
@@ -170,9 +171,13 @@ class RimbleTransaction extends React.Component {
       }
     }
 
-    this.setState({ web3 }, () => {
+
+    this.setState({ web3 }, async () => {
       // After setting the web3 provider, check network
       this.checkNetwork();
+      if (account) {
+        await this.initAccount();
+      }
     });
 
     console.log("Finished initWeb3");
@@ -208,7 +213,7 @@ class RimbleTransaction extends React.Component {
 
     try {
       // Request account access if needed
-      await window.ethereum.enable().then(wallets => {
+      await this.state.web3.eth.getAccounts().then(wallets => {
         const account = wallets[0];
         this.closeConnectionPendingModal();
         this.setState({ account });
@@ -281,13 +286,9 @@ class RimbleTransaction extends React.Component {
 
     // Check for account
     if (!this.state.account) {
-    // if (!this.state.account || !this.state.accountValidated) {
       // Show modal to connect account
       this.openConnectionModal();
     }
-
-    // await this.initAccount();
-    // await this.validateAccount();
   };
 
   getRequiredNetwork = () => {
@@ -377,7 +378,7 @@ class RimbleTransaction extends React.Component {
       ) {
         return;
       }
-      window.ethereum.enable().then(wallets => {
+      this.state.web3.eth.getAccounts().then(wallets => {
         const updatedAccount = wallets[0];
 
         if (updatedAccount !== account) {
@@ -787,15 +788,11 @@ class RimbleTransaction extends React.Component {
   };
 
   componentDidMount() {
-    // Performs a check on browser and will load a web3 provider
-    this.initWeb3();
+    const { context } = this.props;
+    const { library, account } = context || {};
+    this.initWeb3(library, account);
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.web3 && prevProps.web3 !== this.props.web3) {
-      // Performs a check on browser and will load a web3 provider
-      this.initWeb3(this.props.web3);
-    }
-  }
+
 
   render() {
     return (

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Box } from 'rimble-ui'
+import { Box } from 'rimble-ui'
 import { PublicAddress } from 'rimble-ui';
 import { QR } from 'rimble-ui';
 import styles from './Landing.module.scss';
@@ -29,9 +29,8 @@ class Landing extends Component {
   //   })
   // };
   render() {
-    const { web3, account, network, accountBalance } = this.props;
+    const { account, network, accountBalance } = this.props;
     const { genericError, storageValue } = this.state;
-
     return (
       <Box
         style={{
