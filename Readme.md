@@ -1,6 +1,6 @@
 # Pragma - Lending like a charm
 
-Live demo on Rinkeby: [https://bugduino.github.io](https://bugduino.github.io)
+Live demo on Rinkeby (best on Desktop): [https://bugduino.github.io](https://bugduino.github.io)
 
 This is a PoC for the Ethereal Hackathon
 
@@ -28,3 +28,6 @@ versions a contract wrapper may be added
 - truffle-react
 - web3-react (for Fortmatic, Metamask, Trezor and Ledger integration)
 - rimble-ui
+
+
+**Note: The repo is a little mess as it was hacked up in about 3-4 days, it needs a refactor.

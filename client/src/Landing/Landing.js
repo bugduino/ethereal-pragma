@@ -19,8 +19,17 @@ class Landing extends Component {
       >
         <div>
           <header className={[styles.header]}>
-            <Box width={"50em"} mx={"auto"} px={4}>
-              <Heading.h1 textAlign="center">Pragma</Heading.h1>
+            <Box width={"50em"} mx={"auto"} px={4} pb={3}>
+              <Heading.h1
+                style={{
+                  'color': 'white'
+                }}
+                fontFamily={`"Roboto", "Helvetica", "Arial", sans-serif`} textAlign="center">Trustless lending made easy</Heading.h1>
+              <Heading.h2
+                style={{
+                  'color': 'white'
+                }}
+                fontFamily={`"Roboto", "Helvetica", "Arial", sans-serif`} fontWeight="300" textAlign="center">Lend assets and earn passive income</Heading.h2>
             </Box>
             <LandingForm />
             {genericError &&

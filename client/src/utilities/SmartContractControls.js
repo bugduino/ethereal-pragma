@@ -192,16 +192,6 @@ class SmartContractControls extends React.Component {
     this.processTransactionUpdates(prevProps);
   }
 
-          // {this.state.balanceOf && this.state.balanceOf !== '0' &&
-          //   <Text fontSize={6} textAlign={"center"}>
-          //     cEthers {this.state.balanceOf}
-          //   </Text>
-          // }
-          // {this.state.exchangeRateCurrent && this.state.exchangeRateCurrent !== '0' &&
-          //   <Text fontSize={6} textAlign={"center"}>
-          //     rate {this.state.exchangeRateCurrent}
-          //   </Text>
-          // }
   render() {
     return (
       <Box>
