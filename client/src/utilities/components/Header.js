@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Button } from "rimble-ui";
+import { Box, Flex, Button, Text } from "rimble-ui";
 import NetworkIndicator from "@rimble/network-indicator"
 import AccountOverview from "./AccountOverview";
 import GenericModal from "./GenericModal";
@@ -16,11 +16,17 @@ class Header extends React.Component {
   render() {
     return (
       <Box style={{
-          'position': 'absolute',
-          'left': '0',
-          'right': '0',
-        }}>
+        'position': 'absolute',
+        'left': '0',
+        'right': '0',
+        }}
+      >
         <Flex alignItems={"center"} justifyContent="flex-end" bg={"white"}>
+          <Box mr={4} fontSize={3}>
+            <Text>
+              Pragma
+            </Text>
+          </Box>
           <Box mr={4}>
             <NetworkIndicator currentNetwork={this.props.network.current.id} requiredNetwork={this.props.network.required.id} />
           </Box>
@@ -41,6 +47,7 @@ class Header extends React.Component {
               Connect
             </Button>
           )}
+
           <GenericModal
             account={this.props.account}
             accountBalance={this.props.accountBalance}

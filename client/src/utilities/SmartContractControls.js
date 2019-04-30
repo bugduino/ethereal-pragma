@@ -3,6 +3,7 @@ import { Form, Flex, Box, Text, Button } from "rimble-ui";
 import BigNumber from 'bignumber.js';
 
 import contractAbi from './cETH';
+import { comptrollerAddress, abi } from './Comptroller';
 // Compound v2 rinkeby cETH contract
 const contractAddress = "0xbed6d9490a7cd81ff0f06f29189160a9641a358f";
 
@@ -13,32 +14,45 @@ class SmartContractControls extends React.Component {
     needsUpdate: false
   };
 
+  trimEth = eth => {
+    eth = parseFloat(eth);
+    eth = eth * 1000000;
+    eth = Math.round(eth);
+    eth = eth / 1000000;
+    eth = eth.toFixed(6);
+
+    return eth;
+  };
+
+  BNify = s => new BigNumber(String(s));
   getSupplyRatePerBlock = async () => {
     let value = await this.genericCall('supplyRatePerBlock');
     if (value) {
       const web3 = this.props.web3;
-      const BNify = s => new BigNumber(String(s));
       // TODO get rate from compound directly
-      value = BNify(value).times('2102666.66667').times('100').integerValue(BigNumber.ROUND_FLOOR) // blocks in a year (15 sec block time)
+      value = this.BNify(value).times('2102666.66667').times('100').integerValue(BigNumber.ROUND_FLOOR) // blocks in a year (15 sec block time)
       value = web3.utils.fromWei(
         value.toString(),
         "ether"
       );
-      this.setState({ value: (+value).toFixed(2), needsUpdate: false });
+      this.setState({ supplyRatePerBlock: value, value: (+value).toFixed(2), needsUpdate: false });
     }
     return value;
   };
-  // getExchangeRateCurrent = async () => {
-  //   let exchangeRateCurrent = await this.genericCall('exchangeRateCurrent');
-  //   if (exchangeRateCurrent) {
-  //     exchangeRateCurrent = this.props.web3.utils.fromWei(
-  //       exchangeRateCurrent.toString(),
-  //       "ether"
-  //     );
-  //     this.setState({ exchangeRateCurrent, needsUpdate: false });
-  //   }
-  //   return exchangeRateCurrent;
-  // };
+  getExchangeRateCurrent = async () => {
+    let exchangeRateCurrent = await this.genericCall('exchangeRateCurrent');
+    if (exchangeRateCurrent) {
+      exchangeRateCurrent = this.props.web3.utils.fromWei(
+        exchangeRateCurrent.toString(),
+        "ether"
+      );
+      if (this.state.supplyRatePerBlock) {
+        console.log(this.BNify(this.state.supplyRatePerBlock).times(this.BNify(exchangeRateCurrent)).toString())
+      }
+      this.setState({ exchangeRateCurrent, needsUpdate: false });
+    }
+    return exchangeRateCurrent;
+  };
 
   getBalanceOf = async () => {
     let balanceOf = await this.genericCall('balanceOf', [this.props.account]);
@@ -47,26 +61,27 @@ class SmartContractControls extends React.Component {
         balanceOf.toString(),
         "ether"
       );
-      this.setState({ balanceOf, needsUpdate: false });
+      const ethToReedem = this.BNify(balanceOf).times(this.BNify(this.state.exchangeRateCurrent)).toString();
+      this.setState({ balanceOf, ethToReedem, needsUpdate: false });
     }
     return balanceOf;
   };
 
-  // getAssetsIn = async () => {
-  //   let assetsIn = await this.genericCall('getAssetsIn', [this.props.account]);
-  //   if (assetsIn) {
-  //     this.setState({ assetsIn, needsUpdate: false });
-  //   }
-  //   return assetsIn;
-  // };
-  //
-  // getAccountLiquidity = async () => {
-  //   let accountLiquidity = await this.genericCall('getAccountLiquidity', [this.props.account]);
-  //   if (accountLiquidity) {
-  //     this.setState({ accountLiquidity, needsUpdate: false });
-  //   }
-  //   return accountLiquidity;
-  // };
+  getAssetsIn = async () => {
+    let assetsIn = await this.genericComptrollerContractCall('getAssetsIn', [this.props.account]);
+    if (assetsIn) {
+      this.setState({ assetsIn, needsUpdate: false });
+    }
+    return assetsIn;
+  };
+
+  getAccountLiquidity = async () => {
+    let accountLiquidity = await this.genericComptrollerContractCall('getAccountLiquidity', [this.props.account]);
+    if (accountLiquidity) {
+      this.setState({ accountLiquidity, needsUpdate: false });
+    }
+    return accountLiquidity;
+  };
 
   genericCall = async (methodName, params = []) => {
     const value = await this.props.contract.methods[methodName](...params).call().catch(error => {
@@ -77,13 +92,26 @@ class SmartContractControls extends React.Component {
     return value;
   }
 
+  // genericComptrollerContractCall = async (methodName, params = []) => {
+  //   const value = await this.state.comptrollerContract.methods[methodName](...params).call().catch(error => {
+  //     console.log(`${methodName} error: `, error);
+  //     this.setState({ error });
+  //   });
+  //   console.log(`${methodName} value: `, value, value.toString());
+  //   return value;
+  // }
+
   // Check for updates to the transactions collection
   processTransactionUpdates = prevProps => {
-    Object.keys(this.props.transactions).map(key => {
+    Object.keys(this.props.transactions).map(async key => {
       let tx = this.props.transactions[key];
       if (tx.status === "success" && this.state.needsUpdate) {
         console.log("Getting updated balance in acc and in cTokens.");
-        this.getBalanceOf(); // do not wait
+        const balance = await this.getBalanceOf();
+        if (balance && balance !== '0') {
+          this.getAssetsIn();
+          this.getAccountLiquidity();
+        }
         return false;
       } else {
         return false;
@@ -117,41 +145,77 @@ class SmartContractControls extends React.Component {
     this.setState({ lendAmount: e.target.value });
   };
 
-  componentDidMount() {
+  // createContract = (address, abi) => {
+  //   console.log("creating contract", address, abi);
+  //   // Create contract on initialized web3 provider with given abi and address
+  //   try {
+  //     const comptrollerContract = new this.props.web3.eth.Contract(abi, address);
+  //     this.setState({ comptrollerContract });
+  //   } catch (error) {
+  //     console.log(error)
+  //     console.log("Could not create contract.", address);
+  //   }
+  // };
+
+  async componentDidMount() {
     // Init the contract after the web3 provider has been determined
-    this.props.initContract(contractAddress, contractAbi).then(() => {
+    // if (this.props.web3 && !this.state.comptrollerContract) {
+    //   this.createContract(comptrollerAddress, abi);
+    // }
+    this.props.initContract(contractAddress, contractAbi).then(async () => {
       // Can finally interact with contract
       this.getSupplyRatePerBlock();
-      // this.getExchangeRateCurrent();
+      this.getExchangeRateCurrent();
       if (this.props.account) {
-        this.getBalanceOf();
+        await this.getBalanceOf();
+        // const balance = await this.getBalanceOf();
+        // if (balance && balance !== '0') {
+        //   this.getAssetsIn();
+        //   this.getAccountLiquidity();
+        // }
       }
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
+    // if (this.props.web3 && !this.state.comptrollerContract) {
+    //   this.createContract(comptrollerAddress, abi);
+    // }
     if (this.props.account && prevProps.account !== this.props.account) {
-      this.getBalanceOf();
+      await this.getBalanceOf();
+      // const balance = await this.getBalanceOf();
+      // if (balance && balance !== '0') {
+      //   this.getAssetsIn();
+      //   this.getAccountLiquidity();
+      // }
     }
     this.processTransactionUpdates(prevProps);
   }
 
+          // {this.state.balanceOf && this.state.balanceOf !== '0' &&
+          //   <Text fontSize={6} textAlign={"center"}>
+          //     cEthers {this.state.balanceOf}
+          //   </Text>
+          // }
+          // {this.state.exchangeRateCurrent && this.state.exchangeRateCurrent !== '0' &&
+          //   <Text fontSize={6} textAlign={"center"}>
+          //     rate {this.state.exchangeRateCurrent}
+          //   </Text>
+          // }
   render() {
     return (
       <Box>
         <Box py={4}>
           <Text fontSize={6} textAlign={"center"}>
-            Earn {this.state.value} % APR
+            Earn ~{this.state.value} % APR
           </Text>
-          {this.state.balanceOf && this.state.balanceOf !== '0' &&
-            <Text fontSize={6} textAlign={"center"}>
-              cEthers {this.state.balanceOf}
-            </Text>
-          }
+          <Text fontSize={3} textAlign={"center"}>
+            on your ETH
+          </Text>
         </Box>
 
-        <Form onSubmit={this.handleSubmit} width={1}>
-          <Flex>
+        <Form onSubmit={this.handleSubmit} pb={4}>
+          <Flex justifyContent="center">
             <Box width={9 / 12}>
               <Form.Input
                 required={true}
@@ -167,12 +231,20 @@ class SmartContractControls extends React.Component {
               </Button>
             </Box>
           </Flex>
-          {this.state.balanceOf && this.state.balanceOf !== '0' &&
-            <Button size={"medium"} onClick={this.redeem} bg='navy'>
-              Redeem All
-            </Button>
-          }
         </Form>
+
+        {this.state.balanceOf && this.state.balanceOf !== '0' &&
+          <Box py={4} borderTop={1} borderColor={"#E8E8E8"}>
+            <Text fontSize={6} textAlign={"center"}>
+              Redeem ~{this.trimEth(this.state.ethToReedem)} ETH
+            </Text>
+            <Flex justifyContent="center" pt={2}>
+              <Button icon="AccountBalanceWallet" size={"medium"} onClick={this.redeem}>
+                Withdraw
+              </Button>
+            </Flex>
+          </Box>
+        }
       </Box>
     );
   }
