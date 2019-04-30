@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="45px" height="45px" viewBox="0 0 45 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Trezor-product-page-Copy-14" transform="translate(-214.000000, -1521.000000)" fill="#01B757">
+            <g id="Group-54" transform="translate(213.000000, 1401.000000)">
+                <g id="Group-19" transform="translate(0.000000, 120.000000)">
+                    <g id="H3-Copy-2">
+                        <g id="GITHUB" transform="translate(1.000000, 0.000000)">
+                            <g id="Icon">
+                                <circle id="Oval-4-Copy-4" fill-opacity="0.150000006" cx="22.5" cy="22.5" r="22.5"></circle>
+                                <path d="M27.2446133,19.5296364 L29,19.5296364 L29,29.1125063 L28.9879255,29.1125063 L23.0002082,32 L17.0120745,29.1125063 L17,29.1125063 L17,19.5296364 L18.7562194,19.5296364 L18.7562194,18.1842878 C18.7562194,15.8773006 20.6606641,14 23.0010409,14 C25.3401686,14 27.2446133,15.8773006 27.2446133,18.1842878 L27.2446133,19.5296364 Z M26.5850942,27.5187988 L26.5850942,21.7781862 L19.4149058,21.7781862 L19.4149058,27.5187988 L23.0002082,29.2435607 L26.5850942,27.5187988 Z M20.9333819,18.1842878 L20.9333819,19.5296364 L25.0674508,19.5296364 L25.0674508,18.1842878 C25.0674508,17.1165167 24.1397939,16.2476904 23.0010409,16.2476904 C21.8610388,16.2476904 20.9333819,17.1165167 20.9333819,18.1842878 Z" id="Logotype"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
