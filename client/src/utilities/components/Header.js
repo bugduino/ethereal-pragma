@@ -16,7 +16,7 @@ class Header extends React.Component {
   render() {
     return (
       <Box style={{
-        'position': 'fixed',
+        'position': 'absolute',
         'left': '0',
         'right': '0',
         }}
@@ -55,13 +55,13 @@ class Header extends React.Component {
             </Flex>
           </Box>
 
-          <GenericModal
-            account={this.props.account}
-            accountBalance={this.props.accountBalance}
-            isOpen={this.state.isOpen}
-            closeModal={this.toggleModal}
-            network={this.props.network.current} />
         </Flex>
+        <GenericModal
+          account={this.props.account}
+          accountBalance={this.props.accountBalance}
+          isOpen={this.state.isOpen}
+          closeModal={this.toggleModal}
+          network={this.props.network.current} />
       </Box>
     );
   }

@@ -205,7 +205,7 @@ class SmartContractControls extends React.Component {
         </Box>
 
         <Form onSubmit={this.handleSubmit} pb={4}>
-          <Flex justifyContent="center">
+          <Flex>
             <Box width={9 / 12}>
               <Form.Input
                 required={true}
