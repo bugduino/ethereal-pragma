@@ -1,6 +1,6 @@
-# Pragma - Lending like a charm
+# Pragma - Trustless lending made easy
 
-Live demo on Rinkeby (best on Desktop): [https://bugduino.github.io](https://bugduino.github.io)
+Live demo on Rinkeby (best on Desktop): [https://bugduino.github.io/ethereal-pragma](https://bugduino.github.io/ethereal-pragma)
 
 This is a PoC for the Ethereal Hackathon
 
