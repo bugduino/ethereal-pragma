@@ -224,7 +224,7 @@ class RimbleTransaction extends React.Component {
         this.getAccountBalance();
 
         // Watch for account change
-        this.pollAccountUpdates();
+        // this.pollAccountUpdates();
       });
     } catch (error) {
       // User denied account access...
