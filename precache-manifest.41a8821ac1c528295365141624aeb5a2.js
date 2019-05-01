@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/ethereal-pragma/static/js/runtime~main.1fe028a5.js"
   },
   {
-    "revision": "3bd30b659147187eee94",
-    "url": "/ethereal-pragma/static/js/main.3bd30b65.chunk.js"
+    "revision": "87ca2e3e46c25b0dac29",
+    "url": "/ethereal-pragma/static/js/main.87ca2e3e.chunk.js"
   },
   {
     "revision": "15c97f535dfd0dbc50cf",
     "url": "/ethereal-pragma/static/js/1.15c97f53.chunk.js"
   },
   {
-    "revision": "3bd30b659147187eee94",
+    "revision": "87ca2e3e46c25b0dac29",
     "url": "/ethereal-pragma/static/css/main.0ff40f3b.chunk.css"
   },
   {
-    "revision": "daa86dd0477edf50d85b6ecf8f41a0cd",
+    "revision": "0bd5161fe1fe198243cb574053915df3",
     "url": "/ethereal-pragma/index.html"
   }
 ];
