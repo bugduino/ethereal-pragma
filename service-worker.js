@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/ethereal-pragma/precache-manifest.41a8821ac1c528295365141624aeb5a2.js"
+  "/ethereal-pragma/precache-manifest.9732b9a96391f58e86eb7a3105d48d1e.js"
 );
 
 workbox.clientsClaim();
