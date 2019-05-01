@@ -88,7 +88,7 @@ class SmartContractControls extends React.Component {
       console.log(`${methodName} error: `, error);
       this.setState({ error });
     });
-    console.log(`${methodName} value: `, value, value.toString());
+    console.log(`${methodName} value: `, value);
     return value;
   }
 
@@ -107,11 +107,11 @@ class SmartContractControls extends React.Component {
       let tx = this.props.transactions[key];
       if (tx.status === "success" && this.state.needsUpdate) {
         console.log("Getting updated balance in acc and in cTokens.");
-        const balance = await this.getBalanceOf();
-        if (balance && balance !== '0') {
-          this.getAssetsIn();
-          this.getAccountLiquidity();
-        }
+        // const balance = await this.getBalanceOf();
+        // if (balance && balance !== '0') {
+        //   this.getAssetsIn();
+        //   this.getAccountLiquidity();
+        // }
         return false;
       } else {
         return false;
