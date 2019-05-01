@@ -450,7 +450,7 @@ class RimbleTransaction extends React.Component {
 
     try {
       contract.methods[contractMethod](...params)
-        .send({ from: account, value })
+        .send(value ? { from: account, value } : { from: account })
         .on("transactionHash", hash => {
           // Submitted to block and received transaction hash
           // Set properties on the current transaction
